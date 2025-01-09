@@ -1,4 +1,4 @@
-flavorizr:
+
   flavors:
     dev:
       app:
@@ -12,7 +12,7 @@ flavorizr:
         bundleId: "jimi.demo.tmdb.dev"
         firebase:
           config: "config/dev/GoogleService-Info.plist"
-    banana:
+    prod:
       app:
         name: "TMDB"
 
