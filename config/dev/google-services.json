@@ -1,0 +1,29 @@
+{
+  "project_info": {
+    "project_number": "863616898850",
+    "project_id": "tmdb-dev-986bf",
+    "storage_bucket": "tmdb-dev-986bf.firebasestorage.app"
+  },
+  "client": [
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:863616898850:android:1ab4134375bbda2f10f77b",
+        "android_client_info": {
+          "package_name": "jimi.demo.tmdb.dev"
+        }
+      },
+      "oauth_client": [],
+      "api_key": [
+        {
+          "current_key": "AIzaSyCmwfgXjWWF0ljwMGVAr7ax571JkNEuyI0"
+        }
+      ],
+      "services": {
+        "appinvite_service": {
+          "other_platform_oauth_client": []
+        }
+      }
+    }
+  ],
+  "configuration_version": "1"
+}

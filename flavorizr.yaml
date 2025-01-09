@@ -1,0 +1,26 @@
+flavorizr:
+  flavors:
+    dev:
+      app:
+        name: "TMDB(dev)"
+
+      android:
+        applicationId: "jimi.demo.tmdb.dev"
+        firebase:
+          config: "config/dev/google-services.json"
+      ios:
+        bundleId: "jimi.demo.tmdb.dev"
+        firebase:
+          config: "config/dev/GoogleService-Info.plist"
+    banana:
+      app:
+        name: "TMDB"
+
+      android:
+        applicationId: "jimi.demo.tmdb"
+        firebase:
+          config: "config/prod/google-services.json"
+      ios:
+        bundleId: "jimi.demo.tmdb"
+        firebase:
+          config: "config/prod/GoogleService-Info.plist"
