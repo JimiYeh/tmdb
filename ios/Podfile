@@ -4,10 +4,14 @@ platform :ios, '13.0'
 # CocoaPods analytics sends network stats synchronously affecting flutter build latency.
 ENV['COCOAPODS_DISABLE_STATS'] = 'true'
 
+# 修正 project 配置，確保包含所有 flavor 的配置
 project 'Runner', {
-  'Debug' => :debug,
-  'Profile' => :release,
-  'Release' => :release,
+  'Debug-dev' => :debug,
+  'Profile-dev' => :release,
+  'Release-dev' => :release,
+  'Debug-prod' => :debug,
+  'Profile-prod' => :release,
+  'Release-prod' => :release,
 }
 
 def flutter_root
@@ -32,13 +36,31 @@ target 'Runner' do
   use_modular_headers!
 
   flutter_install_all_ios_pods File.dirname(File.realpath(__FILE__))
-  target 'RunnerTests' do
-    inherit! :search_paths
-  end
 end
 
 post_install do |installer|
   installer.pods_project.targets.each do |target|
     flutter_additional_ios_build_settings(target)
+    
+    target.build_configurations.each do |config|
+      config.build_settings['IPHONEOS_DEPLOYMENT_TARGET'] = '13.0'
+      
+      # 主要應用的 bundle identifier
+      if target.name == 'Runner'
+        if config.name.include?("dev")
+          config.build_settings['PRODUCT_BUNDLE_IDENTIFIER'] = 'jimi.demo.tmdb.dev'
+        else
+          config.build_settings['PRODUCT_BUNDLE_IDENTIFIER'] = 'jimi.demo.tmdb'
+        end
+      else
+        # 為其他 framework 添加後綴，但保持與主應用相同的基礎 ID
+        if config.name.include?("dev")
+          base_id = 'jimi.demo.tmdb.dev'
+        else
+          base_id = 'jimi.demo.tmdb'
+        end
+        config.build_settings['PRODUCT_BUNDLE_IDENTIFIER'] = "#{base_id}.#{target.name.downcase}"
+      end
+    end
   end
 end
