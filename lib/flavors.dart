@@ -20,4 +20,6 @@ class F {
   }
 
   static String get tmdbApiKey => const String.fromEnvironment('TMDB_API_KEY');
+
+  static String get host => const String.fromEnvironment('HOST');
 }

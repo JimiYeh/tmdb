@@ -1,3 +1,4 @@
 {
+    "HOST": "https://api.themoviedb.org/3",
     "TMDB_API_KEY": "eyJhbGciOiJIUzI1NiJ9.eyJhdWQiOiIzNzIxYzg0YzIzMzFlNTIyNjljNWZkZTczODNkNmE1NyIsIm5iZiI6MTU1NzkyNDk1NS4zODQsInN1YiI6IjVjZGMwYzViOTI1MTQxMjFkYWQ1NThkOCIsInNjb3BlcyI6WyJhcGlfcmVhZCJdLCJ2ZXJzaW9uIjoxfQ.izZFay9kGGUJpug1Yvjj_mxFMLeOYEGJ0HxY0Irkp38"
 }
