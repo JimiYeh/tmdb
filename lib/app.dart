@@ -1,44 +1,34 @@
-import 'package:flutter/foundation.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter_riverpod/flutter_riverpod.dart';
+import 'package:flutter_screenutil/flutter_screenutil.dart';
+import 'package:tmdb/pages/router.dart';
 
-import 'flavors.dart';
-import 'pages/my_home_page.dart';
-
-class App extends StatelessWidget {
-
-  const App({Key? key}) : super(key: key);
+class App extends ConsumerWidget {
+  const App({super.key});
 
   @override
-  Widget build(BuildContext context) {
-    return MaterialApp(
-      title: F.title,
-      theme: ThemeData(
-        primarySwatch: Colors.blue,
-      ),
-      home: _flavorBanner(
-        child: MyHomePage(),
-        show: kDebugMode,
-      ),
+  Widget build(BuildContext context, WidgetRef ref) {
+    return ScreenUtilInit(
+      designSize: const Size(375, 812),
+      builder: (context, child) {
+        final router = ref.read(routerProvider);
+
+        return MaterialApp.router(
+          routerConfig: router,
+          theme: ThemeData(
+            primarySwatch: Colors.blue,
+          ),
+          builder: (context, child) {
+            return MediaQuery(
+              data: MediaQuery.of(context).copyWith(
+                // 鎖定字體大小 不受系統字體大小影響
+                textScaler: TextScaler.linear(1.w),
+              ),
+              child: child!,
+            );
+          },
+        );
+      },
     );
   }
-
-  Widget _flavorBanner({
-    required Widget child,
-    bool show = true,
-  }) =>
-      show
-          ? Banner(
-        child: child,
-        location: BannerLocation.topStart,
-        message: F.name,
-        color: Colors.green.withOpacity(0.6),
-        textStyle: TextStyle(
-            fontWeight: FontWeight.w700,
-            fontSize: 12.0,
-            letterSpacing: 1.0),
-        textDirection: TextDirection.ltr,
-      )
-          : Container(
-        child: child,
-      );
 }

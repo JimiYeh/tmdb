@@ -3,6 +3,7 @@ import 'dart:async';
 import 'package:firebase_core/firebase_core.dart';
 import 'package:firebase_crashlytics/firebase_crashlytics.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:tmdb/firebase_options/firebase_options_dev.dart' as dev;
 import 'package:tmdb/firebase_options/firebase_options_prod.dart' as prod;
 import 'package:tmdb/flavors.dart';
@@ -22,7 +23,7 @@ FutureOr<void> main() async {
       FirebaseCrashlytics.instance.recordError(details.exception, details.stack);
     };
 
-    runApp(const App());
+    runApp(ProviderScope(child: const App()));
   }, (error, stackTrace) {
     logger.e('Error: $error');
     FirebaseCrashlytics.instance.recordError(error, stackTrace);
@@ -30,7 +31,6 @@ FutureOr<void> main() async {
 }
 
 Future<void> initializeFirebaseApp() async {
-  // Determine which Firebase options to use based on the flavor
   final firebaseOptions = switch (F.appFlavor) {
     Flavor.dev => dev.DefaultFirebaseOptions.currentPlatform,
     Flavor.prod => prod.DefaultFirebaseOptions.currentPlatform,
