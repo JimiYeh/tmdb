@@ -14,7 +14,7 @@
                 "--flavor",
                 "prod",
                 "--dart-define-from-file",
-                "lib/config/prod_config.json"
+                "config/prod/config.json"
             ]
         },
         {
@@ -27,7 +27,7 @@
                 "--flavor",
                 "prod",
                 "--dart-define-from-file",
-                "lib/config/prod_config.json"
+                "config/prod/config.json"
             ]
         },
         {
@@ -40,7 +40,7 @@
                 "--flavor",
                 "dev",
                 "--dart-define-from-file",
-                "lib/config/dev_config.json"
+                "config/dev/config.json"
             ]
         }
     ]
