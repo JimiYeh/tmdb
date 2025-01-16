@@ -3,6 +3,7 @@ import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:tmdb/flavors.dart';
 import 'package:tmdb/repository/api_response.dart';
 import 'package:tmdb/repository/network/api_client.dart';
+import 'package:tmdb/utils/logger.dart';
 
 class DioClient {
   final Ref ref;
@@ -22,7 +23,27 @@ class DioClient {
           'Accept': 'application/json',
           'Authorization': 'Bearer ${F.tmdbApiKey}',
         },
-      );
+      )
+      ..interceptors.add(InterceptorsWrapper(
+        onRequest: (options, handler) {
+          logger.d('Request: ${options.uri}');
+          return handler.next(options);
+        },
+        onError: (error, handler) {
+          logger.e('Error: ${error.response?.statusCode}');
+          try {
+            // * 將 API 錯誤轉換為 ApiResponse
+            final apiError = ApiError.fromJson(error.response?.data);
+            return handler.resolve(Response(requestOptions: error.requestOptions, statusCode: apiError.statusCode, data: apiError.toJson()));
+          } catch (e) {
+            return handler.next(error);
+          }
+        },
+        onResponse: (response, handler) {
+          logger.d('Response: ${response.statusCode}');
+          return handler.next(response);
+        },
+      ));
 
     _apiClient = ApiClient(_dio);
   }
