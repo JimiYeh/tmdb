@@ -6,6 +6,8 @@ import 'package:tmdb/pages/home/widget/movie_poster.dart';
 import 'package:tmdb/pages/home/widget/movie_slider.dart';
 import 'package:tmdb/pages/router.dart';
 
+const _fetchMoreThreshold = 5;
+
 class HomePage extends BasePage {
   const HomePage({super.key});
 
@@ -46,7 +48,11 @@ class _HomePageState extends BasePageState<HomePage> {
                     movies: movies,
                     pageController: pageController,
                     totalPage: movies.length,
-                    onPageChange: (index) {},
+                    onPageChange: (index) {
+                      if (index >= movies.length - _fetchMoreThreshold) {
+                        ref.read(nowPlayingMoviesProvider.notifier).fetchMore();
+                      }
+                    },
                   ),
                 ],
               )

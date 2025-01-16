@@ -6,7 +6,7 @@ part of 'home_provider.dart';
 // RiverpodGenerator
 // **************************************************************************
 
-String _$nowPlayingMoviesHash() => r'4827618ac14052715ad812e8a3e97af1c323de25';
+String _$nowPlayingMoviesHash() => r'e24c0d3dab8d24c8d435113e99c802b6ce1d791b';
 
 /// See also [NowPlayingMovies].
 @ProviderFor(NowPlayingMovies)

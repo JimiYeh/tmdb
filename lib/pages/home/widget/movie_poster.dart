@@ -80,11 +80,12 @@ class _PosterItem extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
+    if (movie.posterPath == null) return const SizedBox.shrink();
     return SizedBox(
       width: double.infinity,
       height: double.infinity,
       child: CachedNetworkImage(
-        imageUrl: getImageUrl(movie.posterPath),
+        imageUrl: getImageUrl(movie.posterPath!),
         fit: BoxFit.cover,
         alignment: Alignment.topCenter,
         placeholder: (context, url) => Container(

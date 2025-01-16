@@ -26,7 +26,7 @@ class MovieSlider extends StatelessWidget {
     return PageView.builder(
       controller: pageController,
       itemCount: movies.length,
-      padEnds: true,
+      onPageChanged: onPageChange,
       itemBuilder: (context, index) {
         return AnimatedBuilder(
           animation: pageController,
@@ -81,10 +81,11 @@ class _MovieSliderItem extends StatelessWidget {
           child: Column(
             children: [
               // 封面 用橫幅 16:9 的 backdropPath
-              ClipRRect(
-                borderRadius: BorderRadius.circular(10),
-                child: CachedNetworkImage(imageUrl: getImageUrl(movie.backdropPath), fit: BoxFit.contain),
-              ),
+              if (movie.backdropPath != null)
+                ClipRRect(
+                  borderRadius: BorderRadius.circular(10),
+                  child: CachedNetworkImage(imageUrl: getImageUrl(movie.backdropPath!), fit: BoxFit.contain),
+                ),
               SizedBox(height: 20),
               // 標題
               Text(

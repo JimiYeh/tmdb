@@ -10,6 +10,7 @@ part 'home_provider.g.dart';
 class NowPlayingMovies extends _$NowPlayingMovies {
   int _page = 1;
   int? _totalPage;
+  bool isFetching = false;
 
   @override
   FutureOr<List<Movie>> build() async {
@@ -20,5 +21,17 @@ class NowPlayingMovies extends _$NowPlayingMovies {
       _totalPage ??= data.totalPages;
       return data.results;
     }, []);
+  }
+
+  void fetchMore() async {
+    if (_page < _totalPage! && !isFetching) {
+      isFetching = true;
+      final response = await ref.read(apiRepositoryProvider).fetchNowPlayingMovieList(page: _page);
+      isFetching = false;
+      return response.whenData((data) {
+        _page++;
+        state = AsyncValue.data([...?state.value, ...data.results]);
+      });
+    }
   }
 }
