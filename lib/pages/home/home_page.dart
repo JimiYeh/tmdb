@@ -2,6 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:tmdb/pages/base_page.dart';
 import 'package:tmdb/pages/home/home_provider.dart';
+import 'package:tmdb/pages/home/widget/movie_poster.dart';
 import 'package:tmdb/pages/home/widget/movie_slider.dart';
 import 'package:tmdb/pages/router.dart';
 
@@ -37,19 +38,19 @@ class _HomePageState extends BasePageState<HomePage> {
     final moviesAsync = ref.watch(nowPlayingMoviesProvider);
     return moviesAsync.when(data: (movies) {
       return Scaffold(
-        body: Stack(
-          children: [
-            if (movies.isNotEmpty)
-              Center(
-                child: MovieSlider(
-                  movies: movies,
-                  pageController: pageController,
-                  totalPage: movies.length,
-                  onPageChange: (index) {},
-                ),
-              ),
-          ],
-        ),
+        body: movies.isNotEmpty
+            ? Stack(
+                children: [
+                  MoviePoster(movies: movies, pageController: pageController),
+                  MovieSlider(
+                    movies: movies,
+                    pageController: pageController,
+                    totalPage: movies.length,
+                    onPageChange: (index) {},
+                  ),
+                ],
+              )
+            : Container(),
       );
     }, error: (error, stackTrace) {
       return SizedBox.shrink();

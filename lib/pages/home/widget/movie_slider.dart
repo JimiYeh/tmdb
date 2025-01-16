@@ -33,10 +33,12 @@ class MovieSlider extends StatelessWidget {
           builder: (context, child) {
             double value = 1.0;
 
-            // 處理 pageController.page 可能為空的情況
-            value = ((pageController.page ?? pageController.initialPage) - index).toDouble();
-            // 限制偏移範圍
-            value = (1 - (value.abs() * .5)).clamp(0.0, 1.0);
+            if (pageController.hasClients && pageController.position.hasViewportDimension) {
+              // 只有在 PageView 完全構建後才訪問 page
+              value = ((pageController.page ?? pageController.initialPage) - index).toDouble();
+              // 限制偏移範圍
+              value = (1 - (value.abs() * .5)).clamp(0.0, 1.0);
+            }
 
             return Transform.translate(
               offset: Offset(0, 100 * (1 - value)), // 往下偏移
@@ -52,7 +54,7 @@ class MovieSlider extends StatelessWidget {
 
 class _MovieSliderItem extends StatelessWidget {
   final Movie movie;
-  const _MovieSliderItem({super.key, required this.movie});
+  const _MovieSliderItem({required this.movie});
 
   @override
   Widget build(BuildContext context) {
