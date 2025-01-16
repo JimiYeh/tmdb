@@ -1,6 +1,7 @@
 import 'package:cached_network_image/cached_network_image.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_rating_bar/flutter_rating_bar.dart';
+import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:tmdb/model/resp_movie_list.dart';
 import 'package:tmdb/utils/tmdb.dart';
 
@@ -69,7 +70,7 @@ class _MovieSliderItem extends StatelessWidget {
                 rating: movie.voteAverage / 2,
                 itemBuilder: (context, index) => Icon(Icons.star, color: Colors.amber),
                 itemCount: 5,
-                itemSize: 20,
+                itemSize: 24.w,
                 unratedColor: Colors.amber.withValues(alpha: 0.2),
                 direction: Axis.horizontal,
               ),
