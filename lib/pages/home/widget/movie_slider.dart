@@ -25,8 +25,26 @@ class MovieSlider extends StatelessWidget {
   Widget build(BuildContext context) {
     return PageView.builder(
       controller: pageController,
+      itemCount: movies.length,
+      padEnds: true,
       itemBuilder: (context, index) {
-        return _MovieSliderItem(movie: movies[index]);
+        return AnimatedBuilder(
+          animation: pageController,
+          builder: (context, child) {
+            double value = 1.0;
+
+            // 處理 pageController.page 可能為空的情況
+            value = ((pageController.page ?? pageController.initialPage) - index).toDouble();
+            // 限制偏移範圍
+            value = (1 - (value.abs() * .5)).clamp(0.0, 1.0);
+
+            return Transform.translate(
+              offset: Offset(0, 100 * (1 - value)), // 往下偏移
+              child: child,
+            );
+          },
+          child: _MovieSliderItem(movie: movies[index]),
+        );
       },
     );
   }
@@ -40,32 +58,39 @@ class _MovieSliderItem extends StatelessWidget {
   Widget build(BuildContext context) {
     final height = MediaQuery.sizeOf(context).height;
     return Container(
-      height: height * 0.7,
-      decoration: BoxDecoration(
-        borderRadius: BorderRadius.vertical(top: Radius.circular(20)),
-        boxShadow: [
-          BoxShadow(
-            color: Colors.black.withValues(alpha: 0.5),
-            blurRadius: 10,
-            offset: Offset(0, 10),
-          ),
-        ],
-      ),
-      child: Padding(
-        padding: const EdgeInsets.all(16.0),
-        child: SingleChildScrollView(
+      color: Colors.transparent,
+      alignment: Alignment.bottomCenter,
+      child: Container(
+        height: height * 0.7,
+        margin: EdgeInsets.symmetric(horizontal: 20),
+        decoration: BoxDecoration(
+          borderRadius: BorderRadius.vertical(top: Radius.circular(20)),
+          color: Colors.white,
+          boxShadow: [
+            BoxShadow(
+              color: Colors.black.withValues(alpha: 0.5),
+              blurRadius: 10,
+              offset: Offset(0, 10),
+            ),
+          ],
+        ),
+        child: Padding(
+          padding: const EdgeInsets.all(16.0),
           child: Column(
             children: [
+              // 封面 用橫幅 16:9 的 backdropPath
               ClipRRect(
-                borderRadius: BorderRadius.vertical(top: Radius.circular(10)),
+                borderRadius: BorderRadius.circular(10),
                 child: CachedNetworkImage(imageUrl: getImageUrl(movie.backdropPath), fit: BoxFit.contain),
               ),
               SizedBox(height: 20),
+              // 標題
               Text(
                 movie.title,
                 style: TextStyle(fontSize: 20, fontWeight: FontWeight.bold),
               ),
               SizedBox(height: 10),
+              // 評分
               RatingBarIndicator(
                 rating: movie.voteAverage / 2,
                 itemBuilder: (context, index) => Icon(Icons.star, color: Colors.amber),
@@ -73,6 +98,15 @@ class _MovieSliderItem extends StatelessWidget {
                 itemSize: 24.w,
                 unratedColor: Colors.amber.withValues(alpha: 0.2),
                 direction: Axis.horizontal,
+              ),
+              SizedBox(height: 10),
+              // 簡介
+              Expanded(
+                child: Text(
+                  movie.overview,
+                  style: TextStyle(fontSize: 16, color: Colors.blueGrey),
+                  overflow: TextOverflow.fade,
+                ),
               ),
             ],
           ),

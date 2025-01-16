@@ -40,11 +40,13 @@ class _HomePageState extends BasePageState<HomePage> {
         body: Stack(
           children: [
             if (movies.isNotEmpty)
-              MovieSlider(
-                movies: movies,
-                pageController: pageController,
-                totalPage: movies.length,
-                onPageChange: (index) {},
+              Center(
+                child: MovieSlider(
+                  movies: movies,
+                  pageController: pageController,
+                  totalPage: movies.length,
+                  onPageChange: (index) {},
+                ),
               ),
           ],
         ),
